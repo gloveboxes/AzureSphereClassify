@@ -10,3 +10,4 @@ build/approot*
 build/build.ninja
 build/cmake_install.cmake
 build/lib
+classifyHL/app_manifest.json
