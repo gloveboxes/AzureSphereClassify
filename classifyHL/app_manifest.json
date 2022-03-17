@@ -1,0 +1,25 @@
+{
+  "SchemaVersion": 1,
+  "Name": "hvac_solution",
+  "ComponentId": "25025d2c-66da-4448-bae1-ac26fcdd3627",
+  "EntryPoint": "/bin/app",
+  "CmdArgs": [
+    "--ScopeID",
+    "REPLACE_WITH_YOUR_ID_SCOPE"
+  ],
+  "Capabilities": {
+    "Gpio": [
+      "$NETWORK_CONNECTED_LED",
+      "$LED2"
+    ],
+    "AllowedConnections": [
+      "global.azure-devices-provisioning.net",
+      "REPLACE_WITH_YOUR_IOT_HUB_ENDPOINT_URL"
+    ],
+    "DeviceAuthentication": "9d7e79eb-e021-43ce-9f2b-fa944b447494",
+    "AllowedApplicationConnections": [
+      "REPLACE_WITH_YOUR_AZURE_SPHERE_TENANT_ID"
+    ]
+  },
+  "ApplicationType": "Default"
+}
