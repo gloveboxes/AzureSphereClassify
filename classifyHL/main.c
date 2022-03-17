@@ -78,7 +78,7 @@ static void report_startup(bool connected)
 static void InitPeripheralsAndHandlers(void)
 {
 	dx_Log_Debug_Init(Log_Debug_Time_buffer, sizeof(Log_Debug_Time_buffer));
-	dx_azureConnect(&dx_config, NETWORK_INTERFACE, IOT_PLUG_AND_PLAY_MODEL_ID);
+	dx_azureConnect(&dx_config, NETWORK_INTERFACE, NULL);
 	dx_gpioSetOpen(gpio_binding_sets, NELEMS(gpio_binding_sets));
 	dx_timerSetStart(timer_binding_sets, NELEMS(timer_binding_sets));
 	dx_deviceTwinSubscribe(device_twin_bindings, NELEMS(device_twin_bindings));

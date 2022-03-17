@@ -67,7 +67,7 @@
 #define EI_CLASSIFIER_SLICES_PER_MODEL_WINDOW    4
 #endif // EI_CLASSIFIER_SLICES_PER_MODEL_WINDOW
 
-const char* ei_classifier_inferencing_categories[] = { "idle", "snake", "updown", "wave" };
+const char* ei_classifier_inferencing_categories[] = { "idle", "rattle", "updown", "wave" };
 
 typedef struct {
     int axes;

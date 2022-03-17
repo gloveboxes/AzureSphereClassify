@@ -315,7 +315,7 @@ void inference_task(void* pParameters)
 
 		printf(" [ ");
 
-		//  "idle", "snake", "updown", "wave"
+		//  "idle", "rattle", "updown", "wave"
 		for (size_t ix = 0; ix < smoothen.count_size; ix++) {
 			printf("%u", smoothen.count[ix]);
 			if (ix != smoothen.count_size + 1) {
