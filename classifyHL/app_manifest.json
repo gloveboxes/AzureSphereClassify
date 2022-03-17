@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "Name": "hvac_solution",
+  "Name": "classify_solution",
   "ComponentId": "25025d2c-66da-4448-bae1-ac26fcdd3627",
   "EntryPoint": "/bin/app",
   "CmdArgs": [

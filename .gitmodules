@@ -4,3 +4,6 @@
 [submodule "mt3620_m4_software"]
 	path = mt3620_m4_software
 	url = https://github.com/MediaTek-Labs/mt3620_m4_software.git
+[submodule "classifyHL/tools"]
+	path = classifyHL/tools
+	url = https://github.com/Azure-Sphere-DevX/AzureSphereDevX.Tools.git

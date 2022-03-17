@@ -11,17 +11,18 @@
 
 set(AVNET TRUE "AVNET Azure Sphere Starter Kit Revision 1 ")    
 # set(AVNET_REV_2 TRUE "AVNET Azure Sphere Starter Kit Revision 2 ")             
-# set(SEEED_STUDIO_RDB TRUE "Seeed Studio Azure Sphere MT3620 Development Kit (aka Reference Design Board or rdb)")
-# set(SEEED_STUDIO_MINI TRUE "Seeed Studio Azure Sphere MT3620 Mini Dev Board")
-
 ###################################################################################################################
 
 cmake_minimum_required (VERSION 3.10)
 
-project (hvac_solution C)
+project (classify_solution C)
 
-azsphere_configure_tools(TOOLS_REVISION "21.07")
-azsphere_configure_api(TARGET_API_SET "10")
+# For information on setting tools revision and target api set see 
+# https://docs.microsoft.com/en-us/azure-sphere/app-development/using-cmake-functions
+
+# This project is evergreen and will build to the SDK installed
+include(tools/cmake/azsphere_config.cmake)
+auto_generate_azsphere_config()
 
 add_subdirectory("AzureSphereDevX" out)
 
@@ -41,16 +42,6 @@ if(AVNET_REV_2)
     add_definitions( -DOEM_AVNET=TRUE )
     azsphere_target_hardware_definition(${PROJECT_NAME} TARGET_DIRECTORY "../HardwareDefinitions/avnet_mt3620_sk_rev2" TARGET_DEFINITION "azure_sphere_learning_path.json")
 endif(AVNET_REV_2)
-
-if (SEEED_STUDIO_RDB)
-    add_definitions( -DOEM_SEEED_STUDIO=TRUE )
-    azsphere_target_hardware_definition(${PROJECT_NAME} TARGET_DIRECTORY "../HardwareDefinitions/mt3620_rdb" TARGET_DEFINITION "azure_sphere_learning_path.json")
-endif()
-
-if (SEEED_STUDIO_MINI)
-    add_definitions( -DOEM_SEEED_STUDIO_MINI=TRUE )
-    azsphere_target_hardware_definition(${PROJECT_NAME} TARGET_DIRECTORY "../HardwareDefinitions/seeed_mt3620_mdb" TARGET_DEFINITION "azure_sphere_learning_path.json")
-endif(SEEED_STUDIO_MINI)
 
 
 azsphere_target_add_image_package(${PROJECT_NAME})
