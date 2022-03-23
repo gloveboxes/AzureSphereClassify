@@ -34,39 +34,39 @@
 /// </summary>
 static void intercore_environment_receive_msg_handler(void *data_block, ssize_t message_length)
 {
-	INTERCORE_BLOCK *ic_data = (INTERCORE_BLOCK *)data_block;
+    INTERCORE_BLOCK *ic_data = (INTERCORE_BLOCK *)data_block;
 
-	switch (ic_data->cmd)
-	{
-		case IC_PREDICTION:
+    switch (ic_data->cmd)
+    {
+        case IC_PREDICTION:
+            // Ignore if predicted fault is normal
+            if (azure_connected && strncmp(ic_data->PREDICTION, "normal", sizeof(ic_data->PREDICTION)))
+            {
+                dx_Log_Debug("Predicted fault: %s\n", ic_data->PREDICTION);
 
-			dx_Log_Debug("Predicted fault: %s\n", ic_data->PREDICTION);
+                dx_deviceTwinReportValue(&dt_prediction, ic_data->PREDICTION);
+            }
 
-			if (azure_connected && strncmp(ic_data->PREDICTION, "normal", sizeof(ic_data->PREDICTION)))
-			{
-				dx_deviceTwinReportValue(&dt_prediction, ic_data->PREDICTION);
-			}
-
-			break;
-		default:
-			break;
-	}
+            break;
+        default:
+            break;
+    }
 }
 
 static void ConnectionStatus(bool connected)
 {
-	dx_gpioStateSet(&gpio_network_led, connected);
-	azure_connected = connected;
+    dx_gpioStateSet(&gpio_network_led, connected);
+    azure_connected = connected;
 }
 
 static void report_startup(bool connected)
 {
-	dx_deviceTwinReportValue(&dt_utc_startup, dx_getCurrentUtc(msgBuffer, sizeof(msgBuffer)));
-	snprintf(msgBuffer, sizeof(msgBuffer), "Sample version: %s, DevX version: %s", SAMPLE_VERSION_NUMBER, AZURE_SPHERE_DEVX_VERSION);
-	dx_deviceTwinReportValue(&dt_hvac_sw_version, msgBuffer);
-	dx_deviceTwinReportValue(&dt_prediction, "normal");
-	// now unregister this callback as we've reported startup time and sw version
-	dx_azureUnregisterConnectionChangedNotification(report_startup);
+    dx_deviceTwinReportValue(&dt_utc_startup, dx_getCurrentUtc(msgBuffer, sizeof(msgBuffer)));
+    snprintf(msgBuffer, sizeof(msgBuffer), "Sample version: %s, DevX version: %s", SAMPLE_VERSION_NUMBER, AZURE_SPHERE_DEVX_VERSION);
+    dx_deviceTwinReportValue(&dt_hvac_sw_version, msgBuffer);
+    dx_deviceTwinReportValue(&dt_prediction, "normal");
+    // now unregister this callback as we've reported startup time and sw version
+    dx_azureUnregisterConnectionChangedNotification(report_startup);
 }
 
 /// <summary>
@@ -74,15 +74,15 @@ static void report_startup(bool connected)
 /// </summary>
 static void InitPeripheralsAndHandlers(void)
 {
-	dx_Log_Debug_Init(Log_Debug_Time_buffer, sizeof(Log_Debug_Time_buffer));
-	dx_azureConnect(&dx_config, NETWORK_INTERFACE, NULL);
-	dx_gpioSetOpen(gpio_binding_sets, NELEMS(gpio_binding_sets));
-	dx_deviceTwinSubscribe(device_twin_bindings, NELEMS(device_twin_bindings));
+    dx_Log_Debug_Init(Log_Debug_Time_buffer, sizeof(Log_Debug_Time_buffer));
+    dx_azureConnect(&dx_config, NETWORK_INTERFACE, NULL);
+    dx_gpioSetOpen(gpio_binding_sets, NELEMS(gpio_binding_sets));
+    dx_deviceTwinSubscribe(device_twin_bindings, NELEMS(device_twin_bindings));
 
-	dx_intercoreConnect(&intercore_environment_ctx);
+    dx_intercoreConnect(&intercore_environment_ctx);
 
-	dx_azureRegisterConnectionChangedNotification(report_startup);
-	dx_azureRegisterConnectionChangedNotification(ConnectionStatus);
+    dx_azureRegisterConnectionChangedNotification(report_startup);
+    dx_azureRegisterConnectionChangedNotification(ConnectionStatus);
 }
 
 /// <summary>
@@ -90,26 +90,26 @@ static void InitPeripheralsAndHandlers(void)
 /// </summary>
 static void ClosePeripheralsAndHandlers(void)
 {
-	dx_deviceTwinUnsubscribe();
-	dx_gpioSetClose(gpio_binding_sets, NELEMS(gpio_binding_sets));
-	dx_azureToDeviceStop();
+    dx_deviceTwinUnsubscribe();
+    dx_gpioSetClose(gpio_binding_sets, NELEMS(gpio_binding_sets));
+    dx_azureToDeviceStop();
 }
 
 int main(int argc, char *argv[])
 {
-	dx_registerTerminationHandler();
+    dx_registerTerminationHandler();
 
-	if (!dx_configParseCmdLineArguments(argc, argv, &dx_config))
-	{
-		return dx_getTerminationExitCode();
-	}
+    if (!dx_configParseCmdLineArguments(argc, argv, &dx_config))
+    {
+        return dx_getTerminationExitCode();
+    }
 
-	InitPeripheralsAndHandlers();
+    InitPeripheralsAndHandlers();
 
-	// Main loop
-	dx_eventLoopRun();
+    // Main loop
+    dx_eventLoopRun();
 
-	ClosePeripheralsAndHandlers();
-	Log_Debug("Application exiting.\n");
-	return dx_getTerminationExitCode();
+    ClosePeripheralsAndHandlers();
+    Log_Debug("Application exiting.\n");
+    return dx_getTerminationExitCode();
 }
