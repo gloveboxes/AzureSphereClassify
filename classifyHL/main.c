@@ -39,11 +39,12 @@ static void intercore_environment_receive_msg_handler(void *data_block, ssize_t 
     switch (ic_data->cmd)
     {
         case IC_PREDICTION:
+
+            dx_Log_Debug("Predicted fault: %s\n", ic_data->PREDICTION);
+
             // Ignore if predicted fault is normal
             if (azure_connected && strncmp(ic_data->PREDICTION, "normal", sizeof(ic_data->PREDICTION)))
             {
-                dx_Log_Debug("Predicted fault: %s\n", ic_data->PREDICTION);
-
                 dx_deviceTwinReportValue(&dt_prediction, ic_data->PREDICTION);
             }
 
