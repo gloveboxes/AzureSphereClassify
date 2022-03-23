@@ -5,9 +5,7 @@
  *   1. DevX is an Open Source community-maintained implementation of the Azure Sphere SDK samples.
  *   2. DevX is a modular library that simplifies common development scenarios.
  *        - You can focus on your solution, not the plumbing.
- *   3. DevX documentation is maintained at https://github.com/gloveboxes/AzureSphereDevX/wiki
- *	 4. The DevX library is not a substitute for understanding the Azure Sphere SDK Samples.
- *          - https://github.com/Azure/azure-sphere-samples
+ *   3. DevX documentation is maintained at https://github.com/Azure-Sphere-DevX/AzureSphereDevX.Examples/wiki
  *
  * DEVELOPER BOARD SELECTION
  *
@@ -42,14 +40,13 @@ static void intercore_environment_receive_msg_handler(void *data_block, ssize_t 
 	{
 		case IC_PREDICTION:
 
-			if (dx_jsonSerialize(
-					msgBuffer, sizeof(msgBuffer), 1, DX_JSON_STRING, "Prediction", ic_data->PREDICTION))
-			{
-				Log_Debug("%s\n", msgBuffer);
+			dx_Log_Debug("Predicted fault: %s\n", ic_data->PREDICTION);
 
-				dx_azurePublish(msgBuffer, strlen(msgBuffer), messageProperties, NELEMS(messageProperties),
-					&contentProperties);
+			if (azure_connected && strncmp(ic_data->PREDICTION, "normal", sizeof(ic_data->PREDICTION)))
+			{
+				dx_deviceTwinReportValue(&dt_prediction, ic_data->PREDICTION);
 			}
+
 			break;
 		default:
 			break;
@@ -59,15 +56,15 @@ static void intercore_environment_receive_msg_handler(void *data_block, ssize_t 
 static void ConnectionStatus(bool connected)
 {
 	dx_gpioStateSet(&gpio_network_led, connected);
+	azure_connected = connected;
 }
 
 static void report_startup(bool connected)
 {
 	dx_deviceTwinReportValue(&dt_utc_startup, dx_getCurrentUtc(msgBuffer, sizeof(msgBuffer)));
-	// Report software version
-	snprintf(msgBuffer, sizeof(msgBuffer), "Sample version: %s, DevX version: %s", SAMPLE_VERSION_NUMBER,
-		AZURE_SPHERE_DEVX_VERSION);
+	snprintf(msgBuffer, sizeof(msgBuffer), "Sample version: %s, DevX version: %s", SAMPLE_VERSION_NUMBER, AZURE_SPHERE_DEVX_VERSION);
 	dx_deviceTwinReportValue(&dt_hvac_sw_version, msgBuffer);
+	dx_deviceTwinReportValue(&dt_prediction, "normal");
 	// now unregister this callback as we've reported startup time and sw version
 	dx_azureUnregisterConnectionChangedNotification(report_startup);
 }
@@ -80,7 +77,6 @@ static void InitPeripheralsAndHandlers(void)
 	dx_Log_Debug_Init(Log_Debug_Time_buffer, sizeof(Log_Debug_Time_buffer));
 	dx_azureConnect(&dx_config, NETWORK_INTERFACE, NULL);
 	dx_gpioSetOpen(gpio_binding_sets, NELEMS(gpio_binding_sets));
-	dx_timerSetStart(timer_binding_sets, NELEMS(timer_binding_sets));
 	dx_deviceTwinSubscribe(device_twin_bindings, NELEMS(device_twin_bindings));
 
 	dx_intercoreConnect(&intercore_environment_ctx);
@@ -94,10 +90,9 @@ static void InitPeripheralsAndHandlers(void)
 /// </summary>
 static void ClosePeripheralsAndHandlers(void)
 {
-	dx_timerSetStop(timer_binding_sets, NELEMS(timer_binding_sets));
 	dx_deviceTwinUnsubscribe();
 	dx_gpioSetClose(gpio_binding_sets, NELEMS(gpio_binding_sets));
-	dx_timerEventLoopStop();
+	dx_azureToDeviceStop();
 }
 
 int main(int argc, char *argv[])
