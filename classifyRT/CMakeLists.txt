@@ -32,7 +32,7 @@ add_definitions(-DEIDSP_USE_CMSIS_DSP=0
 add_compile_definitions(OSAI_FREERTOS)
 add_compile_definitions(OSAI_ENABLE_DMA)
 # When place CODE_REGION in FLASH instead of TCM, please enable this definition:
-add_compile_definitions(M4_ENABLE_XIP_FLASH)
+# add_compile_definitions(M4_ENABLE_XIP_FLASH)
 add_link_options(-specs=nano.specs -specs=nosys.specs)
 
 # Executable
