@@ -1,46 +1,19 @@
-# End to End Scenario
+# Use Machine Learning and Azure Sphere for predictive maintenance
 
-We choose an HVAC system for the scenario as they are familiar systems found in our homes and workplaces.
-An HVAC system is a Heating Ventilation, Air Conditioning Unit.
-https://en.wikipedia.org/wiki/Heating,_ventilation,_and_air_conditioning
+The complete *end-to-end* documentation is provided on this wiki. Refer to the *table of contents* found on the *right hand side* of this page.
 
-The Azure Sphere device will act as an HVAC system. This works well as several Azure Sphere developer kits 
-include built-in sensors for monitoring temperature and pressure. 
-For developer kits without sensors then it is easy to simulate those sensors.
+## Watch the 10 minute end-to-end demo
 
-## IoT concepts covered
+[![](./wiki/media/predictive_maintenace_youtube.png)](https://youtu.be/62XKxzRld28)
 
-We cover the following IoT concepts in this scenario:
+## Introduction
 
-1. Publising telemetry:
-   * The current temperature, air pressure, and humidity
-   * The HVACs current operating state - Off, Cooling, and Heating
-2. Data validation
-   * Cloud to device data validation
-   * Reporting sensor data out of range faults
-3. Remote operations
-   * Setting the HVAC target room temperature
-   * Setting the rate in seconds the HVAC system publishes telemetry
-   * Setting a message on the HVAC display panel
-   * Turning the HVAC on and off
-   * Restarting the HVAC unit
-4. Self-monitoring
-   * A watchdog to check the heath of HVAC system and restart if needed.
-5. Production considerations
-   * How to package and update your applications in production
-   * How to pick the best time to update your application with Deferred Updates
+The HVAC system was chosen for the scenario as they are familiar systems found in our homes and workplaces. An HVAC system is a Heating Ventilation, Air Conditioning Unit. Refer to the [Heating, ventilation, and air conditioning](https://en.wikipedia.org/wiki/Heating,_ventilation,_and_air_conditioning) wikipedia article for more information.
 
+The Avnet Azure Sphere Start Kit will act as an HVAC system as it includes several useful sensors including an accelerometer that will be used to feed the TinyML predictive model to determine if the HVAC system requires maintenance.
 
-## Configuring the application scenario
+![HVAC System](https://upload.wikimedia.org/wikipedia/commons/9/90/Rooftop_Packaged_Units.JPG)
 
-1. Set ID Scope
-1. Set Allowed connections
-1. Set DeviceAuthentication
+## Predictive maintenance solution architecture
 
-For more information refer to:
-
-1. [Adding the Azure Sphere DevX library](https://github.com/gloveboxes/AzureSphereDevX/wiki/Adding-the-DevX-Library)
-1. [Azure Messaging](https://github.com/gloveboxes/AzureSphereDevX/wiki/IoT-Hub-Sending-messages)
-1. [Device Twins](https://github.com/gloveboxes/AzureSphereDevX/wiki/IoT-Hub-Device-Twins)
-1. [Direct Methods](https://github.com/gloveboxes/AzureSphereDevX/wiki/IoT-Hub-Direct-Methods)
-1. [GPIO](https://github.com/gloveboxes/AzureSphereDevX/wiki/Working-with-GPIO)
+![This image shows the predictive maintenance solution architecture](media/predictive_maintenance_solution_architecture.png)
