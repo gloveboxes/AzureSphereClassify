@@ -4,7 +4,7 @@ The complete *end-to-end* documentation is provided on this wiki. Refer to the *
 
 ## Watch the 10 minute end-to-end demo
 
-[![](./wiki/media/predictive_maintenace_youtube.png)](https://youtu.be/62XKxzRld28)
+[![](./AzureSphereClassify/wiki/media/predictive_maintenace_youtube.png)](https://youtu.be/62XKxzRld28)
 
 ## Introduction
 
