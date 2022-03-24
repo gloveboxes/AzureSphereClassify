@@ -1,32 +1,19 @@
-# Edge Impulse classifier and anomaly detection example on Azure Sphere MT3620
+# Use Machine Learning and Azure Sphere for predictive maintenance
 
-This is an example application that runs an embedded Machine Learning model on the *realtime core* of an Azure Sphere MT3620 board, classifying data coming in on the accelerometer. At [Edge Impulse](https://edgeimpulse.com) we enable developers to create the next generation of intelligent device solutions with embedded Machine Learning - especially when it comes to running ML models on microcontrollers.
+The complete *end-to-end* documentation is provided on this wiki. Refer to the *table of contents* found on the *right hand side* of this page.
 
-## Clone the Classify on Azure Sphere repo
+## Watch the 10 minute end-to-end demo
 
-```bash
-git clone --recurse-submodules https://github.com/gloveboxes/AzureSphereClassify
-```
+[![](./wiki/media/predictive_maintenace_youtube.png)](https://youtu.be/62XKxzRld28)
 
-## Install developer todays
+## Introduction
 
-For now, required Windows and Visual Studio 2022 and the Azure Sphere SDK.
+The HVAC system was chosen for the scenario as they are familiar systems found in our homes and workplaces. An HVAC system is a Heating Ventilation, Air Conditioning Unit. Refer to the [Heating, ventilation, and air conditioning](https://en.wikipedia.org/wiki/Heating,_ventilation,_and_air_conditioning) wikipedia article for more information.
 
-## Tool chain
+The Avnet Azure Sphere Start Kit will act as an HVAC system as it includes several useful sensors including an accelerometer that will be used to feed the TinyML predictive model to determine if the HVAC system requires maintenance.
 
-On Windows, copy the *AzureSphereRTCoreToolchainEdgeImpulse.cmake* file to the *C:\Program Files (x86)\Microsoft Azure Sphere SDK\CMakeFiles* folder.
+![HVAC System](https://upload.wikimedia.org/wikipedia/commons/9/90/Rooftop_Packaged_Units.JPG)
 
-more to follow...
+## Predictive maintenance solution architecture
 
-## The project is evergreen
-
-This project automatically updates the CMake Azure Sphere configuration to match the Azure Sphere SDK you've installed on your computer. This is fine for a sample, but for production applications, setting the Azure Sphere configuration in CMake should be intentional and tested.
-
-In the CMakeLists.txt file, the auto_generate_azsphere_config CMake function is called to generate the azsphere_configure_tools and azsphere_configure_api settings.
-
-For production applications, remove this block and replace it with the following CMake commands.
-
-```text
-azsphere_configure_tools(TOOLS_REVISION "<YOUR_TOOLS_VERSION>")
-azsphere_configure_api(TARGET_API_SET "<THE_TARGET_API_SET_YOU_ARE_TESTING_AGAINST")
-```
+![This image shows the predictive maintenance solution architecture](media/predictive_maintenance_solution_architecture.png)
