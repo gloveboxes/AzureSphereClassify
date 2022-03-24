@@ -1,4 +1,4 @@
-# Use Machine Learning and Azure Sphere for predictive maintenance
+# Machine Learning and Azure Sphere for predictive maintenance
 
 ## Documentation
 
